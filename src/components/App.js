@@ -16,7 +16,7 @@ class App extends Component  {
             listID={list.id}
             key={list.id} 
             title={list.title} 
-            cards={list.cards} 
+            cards = {list.cards} 
             />
           ))}
           <TrelloActionButton list />
