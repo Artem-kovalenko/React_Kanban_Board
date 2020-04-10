@@ -24,7 +24,17 @@ export const sort = (
       droppableIndexStart,
       droppableIndexEnd,
       draggableId,
-      type
-    }
+      type,
+    },
+  };
+};
+
+export const editTitle = (listID, newTitle) => {
+  return {
+    type: CONSTANTS.EDIT_LIST_TITLE,
+    payload: {
+      listID,
+      newTitle,
+    },
   };
 };
