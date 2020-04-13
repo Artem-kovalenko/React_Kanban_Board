@@ -1,10 +1,15 @@
 import { CONSTANTS } from "../actions";
-import { Droppable } from "react-beautiful-dnd";
+import { v4 as uuidv4 } from 'uuid';
 
 export const addList = (title) => {
-  return {
-    type: CONSTANTS.ADD_LIST,
-    payload: title,
+  const id = uuidv4();
+  return (dispatch, getState) => {
+    const boardID = getState().activeBoard;
+    console.log(boardID);
+    dispatch({
+      type: CONSTANTS.ADD_LIST,
+      payload: { title, boardID, id },
+    });
   };
 };
 
@@ -16,16 +21,20 @@ export const sort = (
   draggableId,
   type
 ) => {
-  return {
-    type: CONSTANTS.DRAG_HAPPENED,
-    payload: {
-      droppableIdStart,
-      droppableIdEnd,
-      droppableIndexStart,
-      droppableIndexEnd,
-      draggableId,
-      type,
-    },
+  return (dispatch, getState) => {
+    const boardID = getState().activeBoard;
+    dispatch({
+      type: CONSTANTS.DRAG_HAPPENED,
+      payload: {
+        droppableIdStart,
+        droppableIdEnd,
+        droppableIndexEnd,
+        droppableIndexStart,
+        draggableId,
+        type,
+        boardID,
+      },
+    });
   };
 };
 
@@ -36,5 +45,15 @@ export const editTitle = (listID, newTitle) => {
       listID,
       newTitle,
     },
+  };
+};
+
+export const deleteList = (listID) => {
+  return (dispatch, getState) => {
+    const boardID = getState().activeBoard;
+    return dispatch({
+      type: CONSTANTS.DELETE_LIST,
+      payload:{ listID, boardID }
+    });
   };
 };

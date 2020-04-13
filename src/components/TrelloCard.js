@@ -10,12 +10,6 @@ import { editCard, deleteCard } from "../actions";
 import { connect } from "react-redux";
 import TrelloButton from "./TrelloButton";
 
-const TrelloCard = React.memo(({ text, id, listID, index, dispatch }) => {
-  // используем хук
-  // если isEditing = true тогда у нас будет рендериться компонент для изменения карточки (TrelloForm)
-  const [isEditing, setIsEditing] = useState(false);
-  const [cardText, setText] = useState(text);
-
   const CardContainer = styled.div`
     margin: 0 0 8px 0;
     position: relative;
@@ -53,6 +47,12 @@ const TrelloCard = React.memo(({ text, id, listID, index, dispatch }) => {
     }
   `;
 
+const TrelloCard = React.memo(({ text, id, listID, index, dispatch }) => {
+  // используем хук
+  // если isEditing = true тогда у нас будет рендериться компонент для изменения карточки (TrelloForm)
+  const [isEditing, setIsEditing] = useState(false);
+  const [cardText, setText] = useState(text);
+
   const closeForm = (e) => {
     setIsEditing(false);
   };
@@ -69,6 +69,7 @@ const TrelloCard = React.memo(({ text, id, listID, index, dispatch }) => {
   };
 
   const handleDeleteCard = (e) => {
+    console.log(listID);
     dispatch(deleteCard(id, listID));
   };
 

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import TrelloCard from "./TrelloCard";
 import TrelloCreate from "./TrelloCreate";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { editTitle } from "../actions";
+import { editTitle, deleteList } from "../actions";
+import Icon from "@material-ui/core/Icon";
 
 const ListContainer = styled.div`
   background-color: #dfe3e6;
@@ -15,80 +16,108 @@ const ListContainer = styled.div`
   margin-right: 8px;
 `;
 
+const StyledInput = styled.input`
+  width: 97%;
+  border: none;
+  outline-color: blue;
+  border-radius: 3px;
+  margin-bottom: 3px;
+  padding: 5px;
+`;
+
+const TitleContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+`;
+
+const DeleteButton = styled(Icon)`
+  cursor: pointer;
+`;
+
+const ListTitle = styled.h4`
+  transition: background 0.3s ease-in;
+  ${TitleContainer}:hover & {
+    background: #ccc;
+  }
+`;
+
 const TrelloList = ({ title, cards, listID, index, dispatch }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [listTitle, setListTitle] = useState("title");
-
-  const StyledInput = styled.input`
-    width: 100%;
-    border: none;
-    outline-color: blue;
-    border-radius: 3px;
-    margin-bottom: 3px;
-    padding: 5px;
-  `;
-
-  // FIXME: Why does it delete the input on every letter I type in?
+  const [listTitle, setListTitle] = useState(title);
 
   const renderEditInput = () => {
     return (
-      <StyledInput
-        type="text"
-        value={listTitle}
-        onChange={handleChange}
-        autoFocus
-        // onFocus={handleFocus}
-        onBlur={handleFinishEditing}
-      />
+      <form onSubmit={handleFinishEditing}>
+        <StyledInput
+          type="text"
+          value={listTitle}
+          onChange={handleChange}
+          autoFocus
+          onFocus={handleFocus}
+          onBlur={handleFinishEditing}
+        />
+      </form>
     );
   };
 
-  // const handleFocus = e => {
-  //   console.log("hi");
+  const handleFocus = (e) => {
+    e.target.select();
+  };
 
-  //   e.target.select();
-  // };
-
-  const handleChange = e => {
+  const handleChange = (e) => {
     e.preventDefault();
     setListTitle(e.target.value);
   };
 
-  const handleFinishEditing = e => {
+  const handleFinishEditing = (e) => {
     setIsEditing(false);
-    dispatch(editTitle(listID, listTitle))  
-  }  
+    dispatch(editTitle(listID, listTitle));
+  };
+
+  const handleDeleteList = (e) => {
+    dispatch(deleteList(listID));
+  };
 
   return (
     <Draggable draggableId={String(listID)} index={index}>
       {(provided) => (
-        <ListContainer   
-        {...provided.draggableProps} 
-        ref={provided.innerRef} 
-        {...provided.dragHandleProps} 
+        <ListContainer
+          {...provided.draggableProps}
+          ref={provided.innerRef}
+          {...provided.dragHandleProps}
         >
           <Droppable droppableId={String(listID)}>
             {(provided) => (
-              <div {...provided.droppableProps} ref={provided.innerRef} >
-              
-                {isEditing ? ( //если listEditing значит мы редактируем заголовок и нужно отобразить поле, 
-                              //если нет то просто показать заголовок с возможностью кликнуть на него и поставить isEditing в тру чтоб редактировать
-                  renderEditInput()
-                ) : (
-                  <h4 onClick={() => setIsEditing(true)}>{listTitle}</h4>
-                )}  
-
-                {cards.map((card, index) => (
-                  <TrelloCard
-                    key={card.id}
-                    text={card.text}
-                    id={card.id}
-                    index={index}
-                    listID={listID}
-                  />
-                ))}
-                {provided.placeholder}
-                <TrelloCreate listID={listID} />   
+              <div>
+                <div>
+                  {isEditing ? (
+                    renderEditInput()
+                  ) : (
+                    <TitleContainer onClick={() => setIsEditing(true)}>
+                      <ListTitle>{listTitle}</ListTitle>
+                      <DeleteButton onClick={handleDeleteList}>
+                        delete
+                      </DeleteButton>
+                    </TitleContainer>
+                  )}
+                </div>
+                <div {...provided.droppableProps} ref={provided.innerRef}>
+                  {cards.map((card, index) => (
+                    <TrelloCard
+                      key={card.id}
+                      text={card.text}
+                      id={card.id}
+                      index={index}
+                      listID={listID}
+                    />
+                  ))}
+                  {provided.placeholder}
+                  <TrelloCreate listID={listID} />
+                </div>
               </div>
             )}
           </Droppable>
