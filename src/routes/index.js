@@ -1,17 +1,20 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import TrelloBoard from "../components/TrelloBoard";
 import Home from "../components/Home";
+import Modal from "../components/Modal";
+
 
 const AppRouter = () => {
   return (
     <Router>
-      <div>
-        <Route path="/" exact component={Home} />
-        <Route path="/:boardID" component={TrelloBoard} />
-      </div>
+      <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/board/:boardID" component={TrelloBoard} />
+      </Switch>
+      
     </Router>
   );
 };
-
+// <Route path="/board/:boardID/card/:cardID" component={Modal} />
 export default AppRouter;

@@ -11,6 +11,7 @@ class TrelloCreate extends React.PureComponent {
   state = {
     formOpen: false,
     text: "",
+    createdTime: new Date()
   };
 
   // при нажатии на Add поменять formOpen на true и показать поле
@@ -47,15 +48,18 @@ class TrelloCreate extends React.PureComponent {
   };
 
   handleAddCard = () => {
+    
     const { dispatch, listID } = this.props;
-    const { text } = this.state;
+    const { text, createdTime } = this.state;
 
     if (text) {
       this.setState({
         text: "",
+        createdTime: new Date()
       });
-      dispatch(addCard(listID, text));
+      dispatch(addCard(listID, text, createdTime));
     }
+    
   };
 
   // создает кнопку добавить новую карточку или новый список (Add another card/list)

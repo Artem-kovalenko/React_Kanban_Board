@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { addBoard } from "../actions";
 import BoardThumbnail from "./BoardThumbnail";
 
+
 const Thumbnails = styled.div`
   flex: 1;
   height: 50%;
@@ -63,7 +64,7 @@ const Home = ({ boards, boardOrder, dispatch }) => {
       return (
         <Link
           key={boardID}
-          to={`/${board.id}`}
+          to={`/board/${board.id}`}
           style={{ textDecoration: "none" }}
         >
           <BoardThumbnail {...board} />

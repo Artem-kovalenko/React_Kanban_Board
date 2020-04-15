@@ -7,6 +7,7 @@ import styled from "styled-components";
 import { sort, setActiveBoard } from "../actions";
 import { Link } from "react-router-dom";
 
+
 const ListsContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -51,12 +52,13 @@ class TrelloBoard extends PureComponent {
     const listOrder = board.lists;
 
     return (
+
       <DragDropContext onDragEnd={this.onDragEnd}>
         <Link to="/">Go back</Link>
         <h2>{board.title}</h2>
-        <Droppable droppableId="all-lists" direction="horizontal" type="list">
-          {provided => (
-            <ListsContainer
+          <Droppable droppableId="all-lists" direction="horizontal" type="list">
+            {provided => (
+              <ListsContainer
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
@@ -72,8 +74,12 @@ class TrelloBoard extends PureComponent {
                       title={list.title}
                       cards={listCards}
                       index={index}
+                      boardID={boardID}
+                      boardTitle={board.title}
                     />
+                    
                   );
+                  
                 }
               })}
               {provided.placeholder}
@@ -82,6 +88,8 @@ class TrelloBoard extends PureComponent {
           )}
         </Droppable>
       </DragDropContext>
+     
+
     );
   }
 }

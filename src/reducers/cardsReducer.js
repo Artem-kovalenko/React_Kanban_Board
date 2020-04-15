@@ -6,20 +6,22 @@ const initialState = {
   "card-0": {
     text: "Last Episode",
     id: `card-0`,
-    list: "list-0"
+    list: "list-0",
+    createdTime: ""
   }
 };
 
 const cardsReducer = (state = initialState, action) => {
   switch (action.type) {
     case CONSTANTS.ADD_CARD: {
-        const { text, listID, id } = action.payload;
+        const { text, listID, id, createdTime } = action.payload;
   
         cardID += 1;
         const newCard = {
           text,
           id: `card-${id}`,
-          list: listID
+          list: listID,
+          createdTime: createdTime
         };
   
         return { ...state, [`card-${id}`]: newCard };

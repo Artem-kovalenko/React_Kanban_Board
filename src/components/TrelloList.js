@@ -45,7 +45,7 @@ const ListTitle = styled.h4`
   }
 `;
 
-const TrelloList = ({ title, cards, listID, index, dispatch }) => {
+const TrelloList = ({boardTitle, title, cards, listID, boardID, index, dispatch }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [listTitle, setListTitle] = useState(title);
 
@@ -111,14 +111,22 @@ const TrelloList = ({ title, cards, listID, index, dispatch }) => {
                       key={card.id}
                       text={card.text}
                       id={card.id}
+                      createdTime={card.createdTime}
                       index={index}
                       listID={listID}
+                      boardID={boardID}
+                      boardTitle={boardTitle}
+                      listTitle={title}
                     />
+                    
                   ))}
+                  
                   {provided.placeholder}
                   <TrelloCreate listID={listID} />
                 </div>
+                
               </div>
+              
             )}
           </Droppable>
         </ListContainer>

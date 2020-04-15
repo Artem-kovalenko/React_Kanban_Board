@@ -52,7 +52,6 @@ const TrelloForm = React.memo(
             value={text}
             onChange={e => onChange(e)}
             onBlur={closeForm}
-            
           />
         </StyledCard>
         <ButtonContainer>
