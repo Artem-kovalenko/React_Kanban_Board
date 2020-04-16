@@ -62,6 +62,12 @@ class TrelloCreate extends React.PureComponent {
     
   };
 
+  onKeyUp = (e) => {
+    if(e.keyCode === 13) {
+      this.props.list ? this.handleAddList() : this.handleAddCard()
+    }
+  }
+
   // создает кнопку добавить новую карточку или новый список (Add another card/list)
   renderOpenForm = () => {
     const { list } = this.props;
@@ -96,7 +102,9 @@ class TrelloCreate extends React.PureComponent {
         const { text } = this.state;
         const { list } = this.props;
         return this.state.formOpen ? (
+          
           <TrelloForm
+            onKeyUp={this.onKeyUp}
             text={text}
             onChange={this.handleInputChange}
             closeForm={this.closeForm}
@@ -105,6 +113,7 @@ class TrelloCreate extends React.PureComponent {
               {list ? "Add List" : "Add Card"}
             </TrelloButton>
           </TrelloForm>
+
         ) : (
           <TrelloOpenForm list={list} onClick={this.openForm}>
             {list ? "Add another list" : "Add another card"}

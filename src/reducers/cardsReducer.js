@@ -7,7 +7,9 @@ const initialState = {
     text: "Last Episode",
     id: `card-0`,
     list: "list-0",
-    createdTime: ""
+    createdTime: "",
+    editedTime: "",
+    cardDescriptionText:""
   }
 };
 
@@ -28,9 +30,11 @@ const cardsReducer = (state = initialState, action) => {
     }
 
     case CONSTANTS.EDIT_CARD: {
-        const{ id, newText} = action.payload;
+        const{ id, newText, editedTime, cardDescriptionText} = action.payload;
         const card = state[id];
         card.text = newText;
+        card.editedTime = editedTime;
+        card.cardDescriptionText = cardDescriptionText;
         return{ ...state, [`card-${id}`]:card}
     }
 

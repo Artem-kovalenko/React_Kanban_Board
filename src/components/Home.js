@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { addBoard } from "../actions";
+import { deleteBoard } from "../actions";
 import BoardThumbnail from "./BoardThumbnail";
 
 
@@ -57,11 +58,24 @@ const Home = ({ boards, boardOrder, dispatch }) => {
     dispatch(addBoard(newBoardTitle));
   };
 
+
+
+  const deleteCurrentBoard = (e) =>{
+    let boardID = e.target.value;
+    dispatch(deleteBoard(boardID));  
+    
+    console.log(boardID)
+    console.log(boards)
+    console.log(boardOrder)
+  }
   const renderBoards = () => {
     return boardOrder.map((boardID) => {
       const board = boards[boardID];
 
+      
+     
       return (
+        <div>
         <Link
           key={boardID}
           to={`/board/${board.id}`}
@@ -69,6 +83,8 @@ const Home = ({ boards, boardOrder, dispatch }) => {
         >
           <BoardThumbnail {...board} />
         </Link>
+        <button value={boardID} onClick={deleteCurrentBoard} >Delete Board</button>
+        </div>  
       );
     });
   };

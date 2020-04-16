@@ -9,10 +9,10 @@ export const addCard = (listID, text, createdTime) => {
     };
 };
 
-export const editCard = (id, listID, newText) => {
+export const editCard = (id, listID, newText, editedTime, cardDescriptionText) => {
     return {
         type: CONSTANTS.EDIT_CARD,
-        payload:{ id, listID, newText }
+        payload:{ id, listID, newText, editedTime, cardDescriptionText }
     };
 };
 

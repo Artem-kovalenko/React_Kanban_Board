@@ -10,7 +10,7 @@ const Container = styled.div`
     `;
 
 const StyledCard = styled(Card)`
-      min-height: 85px;
+      min-height: 65px;
       padding: 6px 8px 2px;
     `;
 
@@ -36,7 +36,7 @@ const StyledIcon = styled(Icon)`
 
 
 const TrelloForm = React.memo(
-  ({ list, text = "", onChange, closeForm, children }) => {
+  ({ list, text = "", onChange, closeForm, onKeyUp, children }) => {
       
     const placeholder = list
       ? "Enter list title..."
@@ -47,6 +47,7 @@ const TrelloForm = React.memo(
       <Container>
         <StyledCard>
           <StyledTextArea
+            onKeyUp={onKeyUp}
             placeholder={placeholder}
             autoFocus
             value={text}

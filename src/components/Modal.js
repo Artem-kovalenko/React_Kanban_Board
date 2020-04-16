@@ -1,7 +1,6 @@
 import React, {forwardRef, useImperativeHandle} from "react";
 import ReactDom from "react-dom";
 
-
 const modal_wrapperStyles = {
   position: "fixed",
   top: 0,
@@ -33,8 +32,9 @@ const modal_boxStyles = {
   zIndex: 101,
   padding: 30,
   borderRadius: 10,
-  fontSize:20,
-  fontWeight: "bold",
+  fontSize:17,
+  lineHeight:1.8,
+  fontWeight: "500",
   fontFamily: "Arial, Helvetica, sans-serif"
 }
 
@@ -47,17 +47,13 @@ const Modal = forwardRef((props, ref) => {
       closeModal: () => close()
     }
   })
-
   const open = () => {
     setDisplay(true)
   }
-
   const close = () => {
     setDisplay(false)
   }
-
   if(display) {
-
     return ReactDom.createPortal(
       <div style={modal_wrapperStyles} className={"modal-wrapper"}>
         <div onClick={close} style={modal_backdropStyles} className={"modal-backdrop"}></div>
@@ -65,33 +61,7 @@ const Modal = forwardRef((props, ref) => {
         {props.children}
         </div>
       </div>, document.getElementById("modal-root"))
-
-
   } else return null
-
-  
 });
 
 export default Modal
-
-// const modalStyle = {
-//   position: "fixed",
-//   left: 0,
-//   top: 0,
-//   bottom: 0,
-//   right: 0,
-//   backgroundColor: "rgba(0,0,0,.2)",
-//   color: "#FFF",
-//   fontSize: "40px",
-// };
-// const Modal = React.memo(({ text, id, listID, boardID, index, dispatch }) => { 
-
-//     return (
-//       <div style={modalStyle}>
-//         <button>close</button>
-//       </div>
-//     );
-//   }
-// );
-
-// export default Modal

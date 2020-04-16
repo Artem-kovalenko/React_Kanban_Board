@@ -26,6 +26,7 @@ const BoardThumbnail = ({ title }) => {
   return (
     <Thumbnail>
       <Title>{title}</Title>
+      
     </Thumbnail>
   );
 };

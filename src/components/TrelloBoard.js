@@ -19,7 +19,6 @@ class TrelloBoard extends PureComponent {
   componentDidMount() {
     // set active trello board here
     const { boardID } = this.props.match.params;
-
     this.props.dispatch(setActiveBoard(boardID));
   }
 

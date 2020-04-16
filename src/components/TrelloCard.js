@@ -48,46 +48,76 @@ const DeleteButton = styled(Icon)`
   }
 `;
 
-const CreateInput = styled.input`
-  width: 100%;
-`;
 const CreateDiv = styled.div`
-  width: 100%;
-  height: 80px;
-  font-size: 20px;
-  padding: 7px;
+  width: 90%;
+  padding: 10px 0;
+  margin: 6px 0;
   box-sizing: border-box;
-  border-radius: 5px;
-  border: none;
+
   outline: none;
-  box-shadow: 0 2px 4px grey;
   align-self: center;
   cursor: pointer;
 `;
 
+const TextButton = styled.button`
+  min-width: 80px;
+  padding: 2px;
+  margin: 50px 10px 0 0;
+  border: 1px solid #333333;
+  outline: none;
+  background: none;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 1.1rem;
+  color: #333333;
+  cursor: pointer;
+  transition: 0.3s;
+  &:hover {
+    background: #fffcdd;
+  }
+`;
+
 const TrelloCard = React.memo(
-  ({ createdTime, boardTitle, listTitle, text, id, listID, boardID, index, dispatch }) => {
+  ({
+    editedTime,
+    createdTime,
+    boardTitle,
+    listTitle,
+    text,
+    descriptionText,
+    id,
+    listID,
+    index,
+    dispatch,
+  }) => {
     // используем хук
     // если isEditing = true тогда у нас будет рендериться компонент для изменения карточки (TrelloForm)
     const [isEditing, setIsEditing] = useState(false);
     const [cardText, setText] = useState(text);
     const [cardIsEditing, setCardIsEditing] = useState(false);
+    const [cardDescriptionText, setCardDescriptionText] = useState(descriptionText);
+    const [cardDescriptionIsEditing, setCardDescriptionIsEditing] = useState(false);
 
     const closeForm = (e) => {
       setIsEditing(false);
+      setCardIsEditing(false);
+      setCardDescriptionIsEditing(false);
     };
 
     const handleChange = (e) => {
       setText(e.target.value);
     };
-
+   
     // по нажатию на кнопку save убрать поле редактирования
     const saveCard = (e) => {
+      let editedTime = new Date();
       e.preventDefault();
-      dispatch(editCard(id, listID, cardText));
+      dispatch(editCard(id, listID, cardText, editedTime));
       setIsEditing(false);
+      setCardIsEditing(false);
     };
-
+    
     const handleDeleteCard = (e) => {
       console.log(listID);
       dispatch(deleteCard(id, listID));
@@ -105,8 +135,32 @@ const TrelloCard = React.memo(
       );
     };
 
-    const modalRef = React.useRef();
+    // -----------------------------------
 
+    const handleDescriptionChange = (e) => {
+      setCardDescriptionText(e.target.value);
+    };
+
+    const saveDescription = (e) => {
+      let editedTime = new Date();
+      e.preventDefault();
+      dispatch(editCard(id, listID, cardText, editedTime, cardDescriptionText));
+      setCardDescriptionIsEditing(false);
+    } 
+
+    const renderDescriptionForm = () => {
+      return (
+        <TrelloForm
+          text={cardDescriptionText}
+          onChange={handleDescriptionChange}
+          closeForm={closeForm}
+        >
+          <TrelloButton onClick={saveDescription}>Save</TrelloButton>
+        </TrelloForm>
+      );
+    };
+
+    const modalRef = React.useRef();
     const renderCard = () => {
       const openModal = () => {
         modalRef.current.openModal();
@@ -130,9 +184,7 @@ const TrelloCard = React.memo(
                   <EditButton
                     onMouseDown={() => setIsEditing(true)}
                     fontSize="small"
-                  >
-                    edit
-                  </EditButton>
+                  >edit</EditButton>
                   <DeleteButton fontSize="small" onMouseDown={handleDeleteCard}>
                     delete
                   </DeleteButton>
@@ -143,25 +195,40 @@ const TrelloCard = React.memo(
               </CardContainer>
             )}
           </Draggable>
+
           <Modal ref={modalRef}>
-            <div>
+            <div className="card-position">
               Board - "{boardTitle}" / List - "{listTitle}" /
             </div>
-
-            <div>
-              <div onDoubleClick={() => setCardIsEditing(true) }>
-                {cardIsEditing ? renderEditForm(): text}
+            <hr />
+            <div className="card-info">
+              <CreateDiv className="card-title" onDoubleClick={() => setCardIsEditing(true)}>
+                {cardIsEditing ? renderEditForm() : text}
+              </CreateDiv>
+              <CreateDiv  className="card-description" onDoubleClick={() => setCardDescriptionIsEditing(true)}>
+                {cardDescriptionIsEditing ? null : <CreateDiv onClick={() => setCardDescriptionIsEditing(true)}>{descriptionText ? "Edit" : "Add"} Description:</CreateDiv>}
+                {cardDescriptionIsEditing ?  renderDescriptionForm() : descriptionText}
+              </CreateDiv>
+            </div>
+            <hr />
+            <div className="form-field-wrapper">
+              <div className="card-details">{`Column: ${listTitle}`}</div>
+              <div className="card-details">
+                {`Created: ${
+                  createdTime ? new Date(createdTime).toLocaleString() : ""
+                }`}
+              </div>
+              <div className="card-details">
+                {`Edited: ${
+                  editedTime ? new Date(editedTime).toLocaleString() : ""
+                }`}
               </div>
             </div>
-            <div className='form-field-wrapper'>
-              <div className='task-details'>
-                {`Column: ${listTitle}`}
-              </div>
-              <div className='task-details'>
-                {`Created: ${createdTime ? new Date(createdTime).toLocaleString() : ''}`}
-              </div>
-              
-          </div>
+            <hr />
+            <div className="button-panel">
+              <TextButton onClick={closeModal}>Cancel</TextButton>
+              <TextButton onClick={handleDeleteCard}>Delete</TextButton>
+            </div>
           </Modal>
         </div>
       );
@@ -169,5 +236,5 @@ const TrelloCard = React.memo(
     return isEditing ? renderEditForm() : renderCard();
   }
 );
-// <button onClick={closeModal}>Cancel</button>
+
 export default connect()(TrelloCard);

@@ -110,23 +110,21 @@ const TrelloList = ({boardTitle, title, cards, listID, boardID, index, dispatch 
                     <TrelloCard
                       key={card.id}
                       text={card.text}
+                      descriptionText={card.cardDescriptionText}
                       id={card.id}
                       createdTime={card.createdTime}
+                      editedTime={card.editedTime}
                       index={index}
                       listID={listID}
                       boardID={boardID}
                       boardTitle={boardTitle}
                       listTitle={title}
                     />
-                    
                   ))}
-                  
                   {provided.placeholder}
                   <TrelloCreate listID={listID} />
                 </div>
-                
-              </div>
-              
+              </div>             
             )}
           </Droppable>
         </ListContainer>

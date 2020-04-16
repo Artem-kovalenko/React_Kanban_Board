@@ -1,7 +1,5 @@
 import { CONSTANTS } from "../actions";
 
-let listID = 0;
-let boardID = 0;
 
 const initialState = {
   "board-0": {
@@ -55,16 +53,22 @@ const boardsReducer = (state = initialState, action) => {
     }
 
     case CONSTANTS.ADD_BOARD: {
-      
       const { title, id } = action.payload;
       const newID = `board-${id}`;
       const newBoard = {
         id: newID,
         title,
         lists: []
-      };
-
+      }
       return { ...state, [newID]: newBoard };
+    }
+
+    case CONSTANTS.DELETE_BOARD: {
+      const { boardID } = action.payload;
+      alert(boardID)
+      const newState = state;
+      delete newState[boardID];
+      return newState;
     }
 
     default:
