@@ -39,6 +39,7 @@ const DeleteButton = styled(Icon)`
 `;
 
 const ListTitle = styled.h4`
+  word-break: break-all;
   transition: background 0.3s ease-in;
   ${TitleContainer}:hover & {
     background: #ccc;

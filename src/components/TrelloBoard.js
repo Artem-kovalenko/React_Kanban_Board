@@ -13,8 +13,6 @@ const ListsContainer = styled.div`
   flex-direction: row;
 `;
 
-// TODO: Fix performance issue
-
 class TrelloBoard extends PureComponent {
   componentDidMount() {
     // set active trello board here
@@ -51,7 +49,6 @@ class TrelloBoard extends PureComponent {
     const listOrder = board.lists;
 
     return (
-
       <DragDropContext onDragEnd={this.onDragEnd}>
         <Link to="/">Go back</Link>
         <h2>{board.title}</h2>
@@ -65,7 +62,6 @@ class TrelloBoard extends PureComponent {
                 const list = lists[listID];
                 if (list) {
                   const listCards = list.cards.map(cardID => cards[cardID]);
-
                   return (
                     <TrelloList
                       listID={list.id}
@@ -76,19 +72,15 @@ class TrelloBoard extends PureComponent {
                       boardID={boardID}
                       boardTitle={board.title}
                     />
-                    
                   );
-                  
                 }
-              })}
+                return null;} )}
               {provided.placeholder}
               <TrelloCreate list />
             </ListsContainer>
           )}
         </Droppable>
       </DragDropContext>
-     
-
     );
   }
 }
@@ -98,5 +90,12 @@ const mapStateToProps = state => ({
   cards: state.cards,
   boards: state.boards
 });
+
+// const mapStateToProps = {
+//   lists,
+//   cards,
+//   boards
+// };
+
 
 export default connect(mapStateToProps)(TrelloBoard);

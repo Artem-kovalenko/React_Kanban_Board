@@ -49,14 +49,16 @@ const DeleteButton = styled(Icon)`
 `;
 
 const CreateDiv = styled.div`
-  width: 90%;
-  padding: 10px 0;
-  margin: 6px 0;
+  width: 96%;
+  padding: 15px 15px 15px 24px;
+  margin: 20px 6px ;
   box-sizing: border-box;
-
   outline: none;
-  align-self: center;
   cursor: pointer;
+  background-color: #d8d8d8;
+  transition: .3s;
+  border-radius:5px;
+  
 `;
 
 const TextButton = styled.button`
@@ -75,6 +77,25 @@ const TextButton = styled.button`
   transition: 0.3s;
   &:hover {
     background: #fffcdd;
+  }
+`;
+
+const EditDescriptionButton = styled.div`
+  width: 40%;
+  padding: 2px 8px;
+  margin: 19px 0px -6px -16px;
+  border: 1px solid #333333;
+  outline: none;
+  background: none;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: black;
+  cursor: pointer;
+  transition: 0.3s;
+  &:hover {
+    background: #ffffff;
   }
 `;
 
@@ -113,13 +134,12 @@ const TrelloCard = React.memo(
     const saveCard = (e) => {
       let editedTime = new Date();
       e.preventDefault();
-      dispatch(editCard(id, listID, cardText, editedTime));
+      dispatch(editCard(id, listID, cardText, editedTime, cardDescriptionText));
       setIsEditing(false);
       setCardIsEditing(false);
     };
     
     const handleDeleteCard = (e) => {
-      console.log(listID);
       dispatch(deleteCard(id, listID));
     };
 
@@ -206,8 +226,8 @@ const TrelloCard = React.memo(
                 {cardIsEditing ? renderEditForm() : text}
               </CreateDiv>
               <CreateDiv  className="card-description" onDoubleClick={() => setCardDescriptionIsEditing(true)}>
-                {cardDescriptionIsEditing ? null : <CreateDiv onClick={() => setCardDescriptionIsEditing(true)}>{descriptionText ? "Edit" : "Add"} Description:</CreateDiv>}
                 {cardDescriptionIsEditing ?  renderDescriptionForm() : descriptionText}
+                {cardDescriptionIsEditing ? null : <EditDescriptionButton onClick={() => setCardDescriptionIsEditing(true)}>{descriptionText ? "Edit Description" : "Add Description"} </EditDescriptionButton>}
               </CreateDiv>
             </div>
             <hr />

@@ -5,7 +5,6 @@ export const addList = (title) => {
   const id = uuidv4();
   return (dispatch, getState) => {
     const boardID = getState().activeBoard;
-    console.log(boardID);
     dispatch({
       type: CONSTANTS.ADD_LIST,
       payload: { title, boardID, id },

@@ -3,10 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { addBoard } from "../actions";
-import { deleteBoard } from "../actions";
 import BoardThumbnail from "./BoardThumbnail";
-
-
 const Thumbnails = styled.div`
   flex: 1;
   height: 50%;
@@ -44,6 +41,24 @@ const CreateInput = styled.input`
   align-self: center;
 `;
 
+const TextButton = styled.button`
+  margin-left: -89px;
+  padding: 18px;
+  border: 1px solid black;
+  outline: none;
+  background: #ffcc3bf2;
+  border-radius: 15px;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 20px;
+  color: black;
+  cursor: pointer;
+  transition: 0.3s;
+  &:hover {
+    background: #fffcdd;
+  }
+`;
+
 const Home = ({ boards, boardOrder, dispatch }) => {
   // this is the home site that shows you your boards and you can also create a Board here.
 
@@ -55,35 +70,31 @@ const Home = ({ boards, boardOrder, dispatch }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setNewBoardTitle("")
     dispatch(addBoard(newBoardTitle));
   };
 
+  // const show = () => {
+  //   console.log(boards)
+  //   console.log(boardOrder)
+  // }
 
-
-  const deleteCurrentBoard = (e) =>{
-    let boardID = e.target.value;
-    dispatch(deleteBoard(boardID));  
-    
-    console.log(boardID)
-    console.log(boards)
-    console.log(boardOrder)
-  }
-  const renderBoards = () => {
-    return boardOrder.map((boardID) => {
-      const board = boards[boardID];
-
-      
-     
+  const renderBoards = () => {  
+    return boardOrder.map((boardID, index) => {
+      const board = boards[boardID]
       return (
-        <div>
-        <Link
-          key={boardID}
-          to={`/board/${board.id}`}
-          style={{ textDecoration: "none" }}
-        >
-          <BoardThumbnail {...board} />
-        </Link>
-        <button value={boardID} onClick={deleteCurrentBoard} >Delete Board</button>
+        <div key={boardID}>
+          <Link
+            to={`/board/${board.id}`}
+            style={{ textDecoration: "none" }}
+          >
+          <BoardThumbnail 
+            boardID={boardID}
+            index={index}  
+            {...board} 
+            />
+          </Link>
+         
         </div>  
       );
     });
@@ -99,6 +110,7 @@ const Home = ({ boards, boardOrder, dispatch }) => {
           placeholder="Your boards title..."
           type="text"
         />
+        <TextButton>Add</TextButton>
       </form>
     );
   };
@@ -115,5 +127,4 @@ const mapStateToProps = (state) => ({
   boards: state.boards,
   boardOrder: state.boardOrder
 });
-
 export default connect(mapStateToProps)(Home);

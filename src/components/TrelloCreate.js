@@ -8,19 +8,19 @@ import TrelloForm from "./TrelloForm";
 import TrelloOpenForm from "./TrelloOpenForm";
 
 class TrelloCreate extends React.PureComponent {
-  state = {
+  state = { 
     formOpen: false,
     text: "",
     createdTime: new Date()
   };
 
-  // при нажатии на Add поменять formOpen на true и показать поле
+  // change fromOpen = ture by clicking ADD
   openForm = () => {
     this.setState({
       formOpen: true,
     });
   };
-  // принажатии куда-либо кроме поля ввода - убрать его
+  //  remove input when clicking outside
   closeForm = (e) => {
     this.setState({
       formOpen: false,
@@ -68,7 +68,7 @@ class TrelloCreate extends React.PureComponent {
     }
   }
 
-  // создает кнопку добавить новую карточку или новый список (Add another card/list)
+  // creating button Add another card/list
   renderOpenForm = () => {
     const { list } = this.props;
 

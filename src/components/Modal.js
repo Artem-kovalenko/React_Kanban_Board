@@ -20,6 +20,7 @@ const modal_backdropStyles = {
 }
 
 const modal_boxStyles = {
+  wordBreak: "break-all",
   position: "relative",
   top: "50%",
   left: "50%",

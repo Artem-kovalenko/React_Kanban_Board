@@ -6,9 +6,9 @@ import boardOrderReducer from "./boardOrderReducer";
 import activeBoardReducer from "./activeBoardReducer";
 
 export default combineReducers({
+  boards: boardsReducer,
   lists: listsReducer,
   cards: cardsReducer,
-  boards: boardsReducer,
   boardOrder: boardOrderReducer,
   activeBoard: activeBoardReducer,
 });

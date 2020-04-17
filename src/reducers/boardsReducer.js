@@ -1,13 +1,7 @@
 import { CONSTANTS } from "../actions";
 
 
-const initialState = {
-  "board-0": {
-    id: "board-0",
-    lists: ["list-0"],
-    title: "myboard"
-  }
-};
+const initialState = {};
 
 const boardsReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -65,9 +59,9 @@ const boardsReducer = (state = initialState, action) => {
 
     case CONSTANTS.DELETE_BOARD: {
       const { boardID } = action.payload;
-      alert(boardID)
       const newState = state;
       delete newState[boardID];
+      console.log(newState)
       return newState;
     }
 

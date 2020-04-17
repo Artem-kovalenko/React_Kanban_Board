@@ -1,31 +1,21 @@
 import { CONSTANTS } from "../actions";
 
-let cardID = 0;
 
-const initialState = {
-  "card-0": {
-    text: "Last Episode",
-    id: `card-0`,
-    list: "list-0",
-    createdTime: "",
-    editedTime: "",
-    cardDescriptionText:""
-  }
-};
+const initialState = {};
 
 const cardsReducer = (state = initialState, action) => {
   switch (action.type) {
     case CONSTANTS.ADD_CARD: {
         const { text, listID, id, createdTime } = action.payload;
-  
-        cardID += 1;
+
         const newCard = {
           text,
           id: `card-${id}`,
           list: listID,
-          createdTime: createdTime
+          createdTime: createdTime,
+          editedTime: "",
+          cardDescriptionText:""
         };
-  
         return { ...state, [`card-${id}`]: newCard };
     }
 
@@ -39,10 +29,14 @@ const cardsReducer = (state = initialState, action) => {
     }
 
     case CONSTANTS.DELETE_CARD: {
+      // this reducer is deleting cards from CARDS:
+      // alert("delete from CARDSREDUCER")
         const { id } = action.payload;
         const newState = state;
         delete newState[id];
+        console.log(newState)
         return newState;
+        // return state;
     }
     default:
       return state;

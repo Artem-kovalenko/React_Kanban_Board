@@ -2,14 +2,7 @@ import { CONSTANTS } from "../actions";
 
 
 
-const initialState = {
-  "list-0": {
-    id: "list-0",
-    cards: ["card-0"],
-    title: "myList",
-    board: "board-0"    
-  }
-};
+const initialState = {};
 
 const listsReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -26,8 +19,6 @@ const listsReducer = (state = initialState, action) => {
     }
 
     case CONSTANTS.ADD_CARD: {
-
-
       const { listID, id } = action.payload;
       const list = state[listID];
       list.cards.push(`card-${id}`);
@@ -82,12 +73,15 @@ const listsReducer = (state = initialState, action) => {
     }
 
     case CONSTANTS.DELETE_CARD: {
+      // this reducer is deleting card from  LISTS: in current list
+      // alert("delete from LISSR")
       const { listID, id } = action.payload;
-
+      
       const list = state[listID];
       const newCards = list.cards.filter(cardID => cardID !== id);
 
       return { ...state, [listID]: { ...list, cards: newCards } };
+      
     }
 
     case CONSTANTS.EDIT_LIST_TITLE: {
