@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { deleteBoard } from "../actions";
-import { connect } from "react-redux";
+
 
 const Thumbnail = styled.div`
   min-height: 150px;
@@ -44,17 +43,20 @@ const TextButton = styled.button`
     background: #fffcdd;
   }
 `;
-const BoardThumbnail = ({ title, boardID, index, dispatch }) => {
-  const deleteCurrentBoard = (e) => {
-    e.preventDefault();
-    dispatch(deleteBoard(boardID, index))
-  }
+
+export default function BoardThumbnail(props) {
+
+  const { board, deleteBoard, clickBoard } = props
+
+
   return (
-    <Thumbnail>
-      <Title>{title}</Title>
-      <TextButton onClick={deleteCurrentBoard}>Delete</TextButton>
+    <div>
+    <Thumbnail onClick={clickBoard}>
+      <Title>{board.title}</Title>
+      
     </Thumbnail>
+    <TextButton onClick={deleteBoard}>Delete</TextButton>
+    </div>
   );
 };
 
-export default connect()(BoardThumbnail);

@@ -1,15 +1,15 @@
 import React from "react";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
-import TrelloBoard from "../components/TrelloBoard";
-import Home from "../components/Home";
+import TrelloBoardContainer from "../containers/TrelloBoardContainer";
+import HomeContainer from "../containers/HomeContainer";
 
 
 const AppRouter = () => {
   return (
     <Router>
       <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/board/:boardID" component={TrelloBoard} />
+          <Route path="/" exact component={HomeContainer} />
+          <Route path="/board/:boardId" component={TrelloBoardContainer} />
       </Switch>
       
     </Router>
